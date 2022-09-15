@@ -1,11 +1,11 @@
-// Importation du model sauce
+// Importation du modèle sauce
 const Sauce = require("../models/sauce");
 
 // Importation du package fs (file system) contenant des fonctions pour modifier le système de fichier et la suppression de fichier
 const fs = require("fs");
 const sauce = require("../models/sauce");
 
-// Exportation de createSauce pour ajouter, créer une sauce
+// Exportation de la fonction "createSauce" pour ajouter, créer une sauce
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     //Suppression du champ "id" du corps de sauceObject
@@ -17,16 +17,13 @@ exports.createSauce = (req, res, next) => {
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         likes: 0,
         dislikes: 0,
-        //usersLiked: [],
-        //usersdisLiked: [], 
     });
-    sauce
-        .save()
-        .then(() => res.status(201).json({message: "Nouvelle sauce enregistrée" }))
+    sauce.save()
+        .then(() => res.status(201).json({message: "Nouvelle sauce enregistrée" })) 
         .catch((error) => res.status(400).json({ error }));
 };
 
-// Exportation de deleteSauce pour supprimer une sauce
+// Exportation de la fonction "deleteSauce" pour supprimer une sauce
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
@@ -46,30 +43,30 @@ exports.deleteSauce = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-// Exportation de getAllSauces permettant d'afficher toutes les sauces de la base de données (renvoie un tableau Sauces)
+// Exportation de la fonction "getAllSauces" permettant d'afficher toutes les sauces de la base de données 
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
         .then((sauces) => res.status(200).json(sauces))
         .catch((error) => res.status(404).json({ error }));
 }; 
 
-// Exportation de getOneSauce permettant d'afficher une sauce spécifique en fonction de son id
+// Exportation de la fonction "getOneSauce" permettant d'afficher une sauce spécifique 
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error }));
 };
 
-// Exportation de modifySauce permettant de modifier une sauce
+// Exportation de la fonction "modifySauce" permettant de modifier une sauce
 exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ?
         {
             ...JSON.parse(req.body.sauce),
-             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+                imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         }   : { ...req.body };
         Sauce.findOne({ _id: req.params.id })
             .then(sauce => {
-            // vérifier si l’utilisateur qui a fait la requête de suppression est bien celui qui a créé la sauce
+            // vérifier si l’utilisateur qui a fait la requête de modification est bien celui qui a créé la sauce
                 if (sauce.userId != req.auth.userId) {
                     res.status(401).json({message: "Non autorisé"});
                 } else {
@@ -82,14 +79,15 @@ exports.modifySauce = (req, res, next) => {
 };
 
 
-// Exportation de likeDislikeSauce qui permet la gestion du like et du dislike
+// Exportation de la fonction "likeDislikeSauce" qui permet la gestion du like et du dislike
 exports.likeDislikeSauce = (req, res, next) => {
     let like = req.body.like
     let userId = req.auth.userId
     let sauceId = req.params.id
             
-    // Like sauce 
+     
     switch (like) { 
+        // Like sauce
         case 1 :
             Sauce.updateOne({ _id: sauceId }, { $push: { usersLiked: userId }, $inc: { likes: +1 }})
                 .then(() => res.status(200).json({ message: "J'aime" }))

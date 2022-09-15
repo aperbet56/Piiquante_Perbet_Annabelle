@@ -1,16 +1,16 @@
-//Importation du modéle de création utilisateur
+//Importation du modèle de création utilisateur
 const User = require("../models/user");
 
 // Importation des différents packages
-const bcrypt = require ("bcrypt"); // Pour crypter des informations
+const bcrypt = require ("bcrypt"); // Pour crypter le mot de passe
 const jwt = require("jsonwebtoken"); //Pour créer des token aléatoires et introuvables afin de sécuriser la connexion au compte
-const cryptojs = require("crypto-js"); // Pour crypter l'adresse mail
+const cryptojs = require("crypto-js"); // Pour crypter l'adresse email
 require("dotenv").config();
 
-// Exportation de "signup"
+// Exportation de la fonction "signup"
 exports.signup = (req, res, next) => {
     const encryptEmail = cryptojs.HmacSHA512(req.body.email, process.env.SECRET_CRYPTOJS_TOKEN).toString(cryptojs.enc.Base64);
-    //Hachage du password avec bcrypt (hash 10 fois)
+    //Hachage du mot de passe avec bcrypt (hash 10 fois)
     bcrypt.hash(req.body.password, 10) 
         .then(hash => {
             // Création d'un utilisateur
@@ -18,7 +18,7 @@ exports.signup = (req, res, next) => {
             email: encryptEmail, 
             password: hash 
             });
-            //Sauvegarde de l'utilisateur vers la base de données
+            //Sauvegarde de l'utilisateur dans la base de données
             user.save()
                 .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
                 .catch(error => res.status(400).json({ error })); 
@@ -29,12 +29,12 @@ exports.signup = (req, res, next) => {
         });
 };
 
-// Exportation de "login"
+// Exportation de la fonction "login"
 exports.login = (req, res, next) => {
     const encryptEmail = cryptojs.HmacSHA512(req.body.email, process.env.SECRET_CRYPTOJS_TOKEN).toString(cryptojs.enc.Base64);
-    User.findOne({ email: encryptEmail }) // Cherche l'adresse mail rentrée par l'utilisateur dans la base de données
+    User.findOne({ email: encryptEmail }) // Cherche l'adresse email rentrée par l'utilisateur dans la base de données
         .then(user => {
-            //Si aucune adresse mail n'est trouvée, je renvoie une erreur
+            //Si aucune adresse email n'est trouvée, je renvoie une erreur
             if (!user) {
                 return res.status(401).json({ message: "Paire login/mot de passe incorrecte"});
             }
@@ -45,7 +45,7 @@ exports.login = (req, res, next) => {
                     if (!valid) {
                         return res.status(401).json({ message: "Paire login/mot de passe incorrecte" });
                     }
-                    // Si le mot de passe est correct, je renvoie "user id", un token random, et une date d'expiration (24h) du token
+                    // Si le mot de passe est correct, je renvoie un "user id", un token, et une date d'expiration (24h) pour le token
                     res.status(200).json({
                         userId: user._id,
                         token: jwt.sign(

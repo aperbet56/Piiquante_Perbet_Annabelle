@@ -1,7 +1,7 @@
 // Création d'un serveur sur le port 3000
 
-const http = require("http"); // Import du package http de Node
-const app = require("./app"); // Import de l'application présente dans le fichier app.js
+const http = require("http"); // Import du package http de Node 
+const app = require("./app"); // Import de l'application présente dans le fichier app.js 
 
 // Pour résoudre une erreur inconnue lors de la création d'un utilisateur depuis le front
 const cors = require('cors');

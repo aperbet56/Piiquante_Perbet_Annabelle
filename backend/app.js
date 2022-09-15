@@ -39,7 +39,7 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
     //autorisation des images venant d'une autre origine
-    res.header("Cross-Origin-Resource-Policy", "cross-origin")
+    res.header("Cross-Origin-Resource-Policy", "cross-origin");
     next();
 });
 

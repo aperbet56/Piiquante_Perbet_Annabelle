@@ -1,4 +1,4 @@
-//Importation de "jsonwebtoken" afin de créer des token aléatoires et uniques pour la connexion
+//Importation de "jsonwebtoken" afin de créer des token aléatoires et uniques 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
  

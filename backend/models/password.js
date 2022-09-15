@@ -13,6 +13,6 @@ passwordSchema
 .has().digits(2)                                  // Doit contenir au moins 2 chiffres
 .has().symbols(1)                                // Doit contenir au moins un symbole
 .has().not().spaces()                            // Ne doit pas contenir d'espaces
-.is().not().oneOf(['Passw0rd', 'Password123','Azerty123', '123456789', '123123123']);  // Listes noires de mot de passe (mot de passe à proscrire)
+.is().not().oneOf(['Passw0rd', 'Password123','Azerty123', '123456789', '123123123']);  // Liste noire de mots de passe (mots de passe à proscrire)
 
 module.exports = passwordSchema;

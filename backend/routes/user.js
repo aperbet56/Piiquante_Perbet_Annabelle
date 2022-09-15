@@ -1,13 +1,12 @@
-// Importation des différents packages
+// Importation de Express
 const express = require ("express");
-
 const router = express.Router(); 
 
 // Importation du controllers "user.js"
 const userCtrl = require ("../controllers/user");
 
 const validPassword = require("../middleware/valid-password");
-const validEmail = require("../middleware/valid-email")
+const validEmail = require("../middleware/valid-email");
 
 // Création des routes
 router.post("/signup", validEmail, validPassword, userCtrl.signup);
