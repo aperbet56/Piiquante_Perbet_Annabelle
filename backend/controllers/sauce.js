@@ -3,7 +3,6 @@ const Sauce = require("../models/sauce");
 
 // Importation du package fs (file system) contenant des fonctions pour modifier le système de fichier et la suppression de fichier
 const fs = require("fs");
-const sauce = require("../models/sauce");
 
 // Exportation de la fonction "createSauce" pour ajouter, créer une sauce
 exports.createSauce = (req, res, next) => {
