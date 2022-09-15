@@ -29,7 +29,7 @@ exports.deleteSauce = (req, res, next) => {
         .then(sauce => {
             // vérifier si l’utilisateur qui a fait la requête de suppression est bien celui qui a créé la sauce
             if (sauce.userId != req.auth.userId) {
-                res.status(401).json({message: "Non autorisé"});
+                res.status(403).json({message: "Requête non autorisée"});
             } else {
                 const filename = sauce.imageUrl.split("/images/")[1];
                 // Fonction unlink du package fs pour supprimer le fichier, en lui passant le fichier à supprimer et le callback à exécuter une fois ce fichier supprimé.
@@ -62,13 +62,13 @@ exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ?
         {
             ...JSON.parse(req.body.sauce),
-                imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         }   : { ...req.body };
         Sauce.findOne({ _id: req.params.id })
             .then(sauce => {
             // vérifier si l’utilisateur qui a fait la requête de modification est bien celui qui a créé la sauce
                 if (sauce.userId != req.auth.userId) {
-                    res.status(401).json({message: "Non autorisé"});
+                    res.status(403).json({message: "Requête non autorisée"});
                 } else {
                     Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
                         .then(() => res.status(200).json({ message: "Sauce modifiée !"}))
