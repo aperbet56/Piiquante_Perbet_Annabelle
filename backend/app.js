@@ -43,7 +43,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Pour parser les objets json // extraction du corps json
+// Pour parser les objets json 
 app.use(express.json());
 
 // Mise en place d'un gestionnaire de routage indiquant à Express de gérer la ressources images de manière statique
