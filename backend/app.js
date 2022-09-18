@@ -50,7 +50,7 @@ app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Ajout des routes
-app.use("/api/auth", userRoutes);
+app.use("/api/auth", limiter, userRoutes);
 app.use("/api/sauces", sauceRoutes);
 
 // Exportation de app
